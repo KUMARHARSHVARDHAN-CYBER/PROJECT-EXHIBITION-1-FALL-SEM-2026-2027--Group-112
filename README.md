@@ -13,20 +13,10 @@ This repository contains the high-fidelity, decoupled frontend architecture for 
 This project was built utilizing a Zero-Trust methodology and a decoupled serverless architecture, incorporating a comprehensive, modern tech stack:
 
 * **Frontend Layer:** Next.js, React.js, Tailwind CSS, Redux, and Zustand.
-
-
 * **PWA & Offline Layer:** Service Workers, Google Workbox and Cache Storage.
-
-
 * **Backend & API Layer:** Node.js, Express.js, Python, C++ Workers.
-
-
 * **Cloud & Hosting:** Vercel, GCP, and GCP Load Balancer.
-
-
 * **Database Layer:** PostgreSQL.
-
-
 
 ---
 
@@ -76,33 +66,25 @@ Introducing smart features designed to transform student accessibility and exper
 
 1. **Clone the repository:**
 ```bash
-git clone <repository-url>
-cd vtop-modernization
-
+git clone https://github.com/KUMARHARSHVARDHAN-CYBER/Enhanced-VTOP-PROJECT-EXHIBITION-1-FALLSEM2026-2027-.git
+cd Enhanced-VTOP-PROJECT-EXHIBITION-1-FALLSEM2026-2027-
 ```
-
 
 2. **Install dependencies:**
 ```bash
 npm install
-
 ```
-
 
 3. **Configure Environment Variables:**
 Create a `.env.local` file in the root directory and add your cryptographic secret key for JWT signing:
 ```env
 JWT_SECRET=enhanced-vtop-secret-jwt-key-2026
-
 ```
-
 
 4. **Run the local development server:**
 ```bash
 npm run dev
-
 ```
-
 
 *Note: For performance testing, use the production build commands below.*
 
@@ -115,10 +97,6 @@ Due to Next.js lazy-compilation in development mode, `npm run dev` does not refl
 ```bash
 npm run build
 npm start
-
 ```
 
 Navigate to `http://localhost:3000`. Login processing is benchmarked at under 10ms execution time.
-
----
-
