@@ -12,7 +12,7 @@ This repository contains the high-fidelity, decoupled frontend architecture for 
 
 This project was built utilizing a Zero-Trust methodology and a decoupled serverless architecture, incorporating a comprehensive, modern tech stack:
 
-* **Frontend Layer:** Next.js, React.js, Tailwind CSS, Redux, and Zustand.
+* **Frontend Layer:** Next.js, React.js, Tailwind CSS.
 * **PWA & Offline Layer:** Service Workers, Google Workbox and Cache Storage.
 * **Backend & API Layer:** Node.js, Express.js, Python, C++ Workers.
 * **Cloud & Hosting:** Vercel, GCP, and GCP Load Balancer.
