@@ -24,12 +24,12 @@ const mockAcknowledgmentData: {
   studentInfo: StudentInfo;
   documents: DocumentItem[];
 } = {
-  authorizedID: "25MIM10100",
+  authorizedID: "25MIM10XXX",
   csrfToken: "11158dce-fb5a-4779-9cd6-7a8373346b26",
   studentInfo: {
-    applicationNo: "2025752485",
-    registerNo: "25MIM10100",
-    name: "KUMAR HARSHVARDHAN",
+    applicationNo: "2025000001",
+    registerNo: "25MIM10XXX",
+    name: "DEMO STUDENT",
     programme: "Integrated M.Tech.",
     campus: "Bhopal",
     branch: "Artificial Intelligence",
@@ -88,7 +88,7 @@ const mockAcknowledgmentData: {
     {
       sNo: 11,
       documentName: "Hostel Affidavit",
-      status: "Not Submitted",
+      status: "Submitted",
     },
     {
       sNo: 12,

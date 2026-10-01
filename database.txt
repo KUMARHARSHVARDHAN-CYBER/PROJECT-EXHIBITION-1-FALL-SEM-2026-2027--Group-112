@@ -1,0 +1,96 @@
+/*
+=============================================================================
+ENHANCED VTOP: MONGODB CONNECTION & USER SCHEMA
+Stack: Next.js, MongoDB, Mongoose
+
+import mongoose from 'mongoose';
+
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/vtop_enhanced';
+
+if (!MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+}
+
+// Global caching for Next.js serverless functions
+let cached = (global as any).mongoose;
+
+if (!cached) {
+  cached = (global as any).mongoose = { conn: null, promise: null };
+}
+
+async function dbConnect() {
+  if (cached.conn) return cached.conn;
+
+  if (!cached.promise) {
+    const opts = { bufferCommands: false };
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      return mongoose;
+    });
+  }
+  
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
+
+  return cached.conn;
+}
+
+export default dbConnect;
+
+
+// --------------------------------------------------------------------------
+// FILE 2: src/models/User.ts
+// Purpose: Defines exactly what a VTOP Student/Faculty record looks like 
+// in the database and automatically hashes passwords before saving.
+// --------------------------------------------------------------------------
+
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+
+const UserSchema = new mongoose.Schema({
+  regNumber: {
+    type: String,
+    required: [true, 'Registration Number is required'],
+    unique: true,
+    uppercase: true,
+    trim: true,
+    match: [/^[0-9]{2}[a-zA-Z]{3}[0-9]{4,5}$/, 'Please provide a valid VIT Registration Number'],
+  },
+  password: {
+    type: String,
+    required: [true, 'Password is required'],
+    minlength: 8,
+    select: true, // Allows us to fetch it during login for comparison
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  role: {
+    type: String,
+    enum: ['student', 'faculty', 'admin'],
+    default: 'student',
+  },
+  campus: {
+    type: String,
+    default: 'VIT Bhopal',
+  },
+}, { timestamps: true });
+
+// Pre-save hook: Automatically hashes the password if a new user is created
+UserSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    next();
+  }
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+// Prevent Mongoose from recompiling the model in Next.js development
+export default mongoose.models.User || mongoose.model('User', UserSchema);
+
+=============================================================================
+*/

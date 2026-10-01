@@ -11,8 +11,8 @@ const mockCredentialsData = {
     {
       id: "gmail",
       account: "Gmail",
-      username: "kumar.25mim10100@vitbhopal.ac.in",
-      defaultCredentials: "25mim10100",
+      username: "demo.25mim10XXX@vitbhopal.ac.in",
+      defaultCredentials: "demo.25mim10XXX",
       urlText: "Click here",
       urlHref: "https://gmail.com",
       supportMail: "sdc@vitbhopal.ac.in",
@@ -21,7 +21,7 @@ const mockCredentialsData = {
     {
       id: "two-step",
       account: "Two Step Verification Number",
-      username: "25MIM10100",
+      username: "demo.25mim10XXX",
       defaultCredentials: "",
       urlText: "",
       urlHref: "",
@@ -30,9 +30,9 @@ const mockCredentialsData = {
     },
   ],
   wifiDetails: [
-    { label: "SSID", value: "VITBPL" },
-    { label: "Username / Identity", value: "25MIM10100" },
-    { label: "Password", value: "l892fd" },
+    { label: "SSID", value: "VIT-Student-WiFi" },
+    { label: "Username / Identity", value: "demo.25mim10XXX" },
+    { label: "Password", value: "********" },
   ],
   eapConfiguration: [
     { property: "EAP Method", value: "PEAP" },

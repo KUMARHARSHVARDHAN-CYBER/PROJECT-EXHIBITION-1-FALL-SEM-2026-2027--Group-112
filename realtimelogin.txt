@@ -1,0 +1,41 @@
+/*
+=============================================================================
+ENHANCED VTOP: REAL-TIME LOGIN HISTORY TRACKING
+Stack: Next.js API Routes, Mongoose
+=============================================================================
+
+// 1. The Schema (src/models/LoginHistory.ts)
+import mongoose from 'mongoose';
+
+const LoginHistorySchema = new mongoose.Schema({
+  regNumber: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now }, // Automatically captures exact server time
+  ipAddress: { type: String },
+  userAgent: { type: String },
+  status: { type: String, enum: ['Success', 'Failed'] }
+});
+
+export default mongoose.models.LoginHistory || mongoose.model('LoginHistory', LoginHistorySchema);
+
+
+// 2. The API Integration (Inside src/app/api/auth/login/route.ts)
+// Place this right after verifying the password is correct, before sending the response:
+
+import LoginHistory from '@/models/LoginHistory';
+
+// Extract real-time network data from Next.js headers
+const forwardedFor = request.headers.get('x-forwarded-for');
+const ipAddress = forwardedFor ? forwardedFor.split(',')[0] : 'Unknown';
+const userAgent = request.headers.get('user-agent') || 'Unknown Device';
+
+// Write the event to the database asynchronously (don't use await here 
+// so it doesn't slow down the user's login transition)
+LoginHistory.create({
+  regNumber: user.regNumber,
+  ipAddress: ipAddress,
+  userAgent: userAgent,
+  status: 'Success'
+}).catch(err => console.error('Failed to log history:', err));
+
+=============================================================================
+*/

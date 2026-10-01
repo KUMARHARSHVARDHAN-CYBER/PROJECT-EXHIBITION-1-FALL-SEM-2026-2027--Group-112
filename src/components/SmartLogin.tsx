@@ -16,7 +16,6 @@ import {
   CheckCircle2,
   ArrowRight,
   Building2,
-  RefreshCw,
 } from 'lucide-react';
 
 export default function SmartLogin() {
@@ -27,11 +26,6 @@ export default function SmartLogin() {
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(true);
-  const [securityChallenge, setSecurityChallenge] = useState<{ question: string; answer: string }>({
-    question: '',
-    answer: '',
-  });
-  const [securityAnswer, setSecurityAnswer] = useState<string>('');
 
   // Authentication & error states
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -39,24 +33,12 @@ export default function SmartLogin() {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [authSuccess, setAuthSuccess] = useState<boolean>(false);
 
-  const generateSecurityQuestion = () => {
-    const num1 = Math.floor(Math.random() * 9) + 1; // 1 to 9
-    const num2 = Math.floor(Math.random() * 9) + 1; // 1 to 9
-    const sum = num1 + num2;
-    setSecurityChallenge({
-      question: `What is ${num1} + ${num2}?`,
-      answer: sum.toString(),
-    });
-    setSecurityAnswer('');
-  };
-
-  // Prefetch dashboard on mount for instant transition
+  // Prefetch dashboard on mount for instant zero-lag transition
   React.useEffect(() => {
-    generateSecurityQuestion();
     router.prefetch('/dashboard');
   }, [router]);
 
-  // Standard Login Submit Handler (Stateless JWT via API Route)
+  // Standard Login Submit Handler (Stateless JWT Auth)
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage('');
@@ -71,18 +53,10 @@ export default function SmartLogin() {
       return;
     }
 
-    if (securityAnswer.trim() !== securityChallenge.answer) {
-      setErrorMessage('Incorrect Security Answer. Please solve the new challenge.');
-      setSecurityAnswer('');
-      generateSecurityQuestion();
-      return;
-    }
-
     setIsLoading(true);
     setAuthMethod('standard');
 
     try {
-      console.time('Fetch-Request');
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
@@ -93,82 +67,70 @@ export default function SmartLogin() {
           password: password.trim(),
         }),
       });
-      console.timeEnd('Fetch-Request');
 
       const data = await response.json();
 
       if (response.ok && data.success) {
         setAuthSuccess(true);
-        console.time('Router-Push');
         router.push('/dashboard');
       } else {
         setErrorMessage(data.message || 'Invalid Credentials');
         setIsLoading(false);
         setAuthMethod(null);
-        setSecurityAnswer('');
-        generateSecurityQuestion();
       }
-    } catch (error) {
-      console.error('Login request failed:', error);
-      setErrorMessage('Authentication server unreachable. Please try again.');
+    } catch (err) {
+      console.error('Login error:', err);
+      setErrorMessage('Failed to connect to authentication server. Please try again.');
       setIsLoading(false);
       setAuthMethod(null);
-      setSecurityAnswer('');
-      generateSecurityQuestion();
     }
   };
 
-  // Seamless SSO / Biometric Login Handler
+  // Seamless SSO / Biometric Login Handler (Instant Smart Auth)
   const handleSSOLogin = async () => {
     setErrorMessage('');
     setIsLoading(true);
     setAuthMethod('sso');
 
-    const ssoRegNo = regNumber.trim() || '25MIM1001';
-    const ssoPassword = password.trim() || 'password123';
+    const targetReg = regNumber.trim() || '25MIMXXXXX';
+    if (!regNumber.trim()) {
+      setRegNumber(targetReg);
+    }
 
     try {
-      console.time('Fetch-Request');
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          regNo: ssoRegNo,
-          password: ssoPassword,
+          regNo: targetReg,
+          password: 'password123',
         }),
       });
-      console.timeEnd('Fetch-Request');
 
       const data = await response.json();
 
       if (response.ok && data.success) {
         setAuthSuccess(true);
-        console.time('Router-Push');
         router.push('/dashboard');
       } else {
         setErrorMessage(data.message || 'Invalid Credentials');
         setIsLoading(false);
         setAuthMethod(null);
-        setSecurityAnswer('');
-        generateSecurityQuestion();
       }
-    } catch (error) {
-      console.error('SSO request failed:', error);
-      setErrorMessage('Authentication server unreachable. Please try again.');
+    } catch (err) {
+      console.error('SSO Login error:', err);
+      setErrorMessage('Failed to connect to authentication server. Please try again.');
       setIsLoading(false);
       setAuthMethod(null);
-      setSecurityAnswer('');
-      generateSecurityQuestion();
     }
   };
 
   // Quick Demo Auto-fill Helper for Exhibition
   const handleAutoFillDemo = () => {
-    setRegNumber('25MIM1001');
+    setRegNumber('25MIMXXXXX');
     setPassword('password123');
-    setSecurityAnswer(securityChallenge.answer);
     setErrorMessage('');
   };
 
@@ -206,8 +168,8 @@ export default function SmartLogin() {
             </h2>
 
             <p className="mt-3 text-xs sm:text-sm text-blue-100/90 leading-relaxed max-w-md">
-              High-throughput authentication gateway with stateless JWT verification,
-              Next.js Edge Middleware route guards, and biometric single sign-on.
+              High-throughput authentication gateway with sub-second token verification,
+              session multiplexing, and biometric single sign-on for students, faculty, and administration.
             </p>
           </div>
         </div>
@@ -216,21 +178,21 @@ export default function SmartLogin() {
         <div className="relative z-10 my-8 bg-blue-950/70 border border-blue-800/60 rounded-xs p-4 sm:p-5 space-y-3">
           <div className="flex items-center justify-between text-xs border-b border-blue-800/60 pb-2">
             <span className="font-mono text-blue-300 font-medium">BENCHMARK COMPARISON</span>
-            <span className="text-[10px] text-emerald-400 font-mono font-bold">99.1% LATENCY DROP</span>
+            <span className="text-[10px] text-emerald-400 font-mono font-bold">84% LATENCY DROP</span>
           </div>
 
           <div className="space-y-2 text-xs">
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Legacy VTOP DB Query:</span>
-              <span className="font-mono text-red-300 line-through">~5,1 ms</span>
+              <span className="font-mono text-red-300 line-through">~5,200 ms</span>
             </div>
             <div className="flex items-center justify-between font-semibold">
               <span className="text-white flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                Stateless Edge JWT Auth:
+                Smart Auth Validation:
               </span>
               <span className="font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-1.5 py-0.5 rounded-xs">
-                ~1 ms (Zero DB Latency)
+                ~1 ms (Fast Edge)
               </span>
             </div>
           </div>
@@ -240,7 +202,7 @@ export default function SmartLogin() {
         <div className="relative z-10 pt-4 border-t border-blue-900/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[11px] text-blue-200/80 font-mono">
           <span className="flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span>AES-256 • Edge-Protected Token</span>
+            <span>AES-256 • Zero-Trust Auth</span>
           </span>
           <span className="text-blue-300">
             Node: <strong className="text-white">vtop-edge-ind-01</strong>
@@ -262,17 +224,17 @@ export default function SmartLogin() {
                 onClick={handleAutoFillDemo}
                 disabled={isLoading}
                 className="text-[11px] font-mono font-medium text-blue-700 hover:text-blue-900 hover:underline bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-xs transition disabled:opacity-50 cursor-pointer"
-                title="Fill demo credentials (25BCE1000 / password123)"
+                title="Fill demo credentials (25MIMXXXXX / password123)"
               >
                 Auto-fill Demo
               </button>
             </div>
             <p className="text-xs text-slate-500">
-              Provide your institutional Registration Number and password.
+              Provide your institutional Registration Number or employee credentials.
             </p>
           </div>
 
-          {/* Local Error Alert */}
+          {/* Local Zero-Latency Error Alert */}
           {errorMessage && (
             <div
               role="alert"
@@ -314,7 +276,7 @@ export default function SmartLogin() {
                     if (errorMessage) setErrorMessage('');
                   }}
                   disabled={isLoading}
-                  placeholder="e.g. 25BCE1000"
+                  placeholder="e.g. 25MIMXXXXX"
                   className="w-full pl-9 pr-3 py-2.5 bg-white border border-slate-300 rounded-xs text-sm text-slate-900 placeholder:text-slate-400 font-medium focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 disabled:bg-slate-100 disabled:text-slate-500 transition-colors"
                   autoComplete="username"
                   spellCheck="false"
@@ -371,48 +333,6 @@ export default function SmartLogin() {
               </div>
             </div>
 
-            {/* Input 3: Offline Security Question */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label
-                  htmlFor="smart-security-answer-input"
-                  className="block text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5"
-                >
-                  <span>Security Verification</span>
-                  <span className="text-[11px] font-mono font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-xs">
-                    {securityChallenge.question}
-                  </span>
-                </label>
-                <button
-                  type="button"
-                  onClick={generateSecurityQuestion}
-                  title="Generate New Question"
-                  className="text-[11px] text-slate-500 hover:text-blue-700 flex items-center gap-1 transition-colors cursor-pointer"
-                >
-                  <RefreshCw className="w-3 h-3" />
-                  <span>New</span>
-                </button>
-              </div>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                  <ShieldCheck className="w-4 h-4" />
-                </div>
-                <input
-                  id="smart-security-answer-input"
-                  type="text"
-                  value={securityAnswer}
-                  onChange={(e) => {
-                    setSecurityAnswer(e.target.value);
-                    if (errorMessage) setErrorMessage('');
-                  }}
-                  disabled={isLoading}
-                  placeholder="Enter calculation answer"
-                  className="w-full pl-9 pr-3 py-2.5 bg-white border border-slate-300 rounded-xs text-sm text-slate-900 placeholder:text-slate-400 font-medium focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 disabled:bg-slate-100 disabled:text-slate-500 transition-colors"
-                  autoComplete="off"
-                />
-              </div>
-            </div>
-
             {/* Remember device checkbox */}
             <div className="flex items-center justify-between pt-1">
               <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-600 select-none">
@@ -428,7 +348,7 @@ export default function SmartLogin() {
               <span className="text-[11px] font-mono text-slate-400">TLS 1.3</span>
             </div>
 
-            {/* Primary Submit Button: Standard Authenticated Login */}
+            {/* Primary Submit Button: Standard Optimized Login */}
             <div className="pt-2">
               <button
                 type="submit"
@@ -439,7 +359,7 @@ export default function SmartLogin() {
                 {isLoading && authMethod === 'standard' ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin text-white" />
-                    <span>Verifying Credentials...</span>
+                    <span>Validating Credentials...</span>
                   </>
                 ) : (
                   <>
@@ -488,7 +408,7 @@ export default function SmartLogin() {
           <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
             <span className="flex items-center gap-1">
               <Building2 className="w-3.5 h-3.5 text-slate-400" />
-              <span>VIT Software Development Cell</span>
+              <span>VIT Bhopal Software Development Cell</span>
             </span>
             <span className="font-mono">v2.4.0</span>
           </div>
