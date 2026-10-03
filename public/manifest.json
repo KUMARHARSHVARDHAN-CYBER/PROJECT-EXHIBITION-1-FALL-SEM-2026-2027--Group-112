@@ -1,8 +1,8 @@
 {
-  "name": "VTOP - Enhanced Student Portal",
-  "short_name": "VTOP",
-  "description": "Institutional Student Information and Academic Management Portal for VIT Bhopal University",
-  "start_url": "/dashboard",
+  "name": "Enhanced VTOP Portal",
+  "short_name": "Enhanced VTOP",
+  "description": "Institutional Student Information and Academic Management Portal",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#F8FAFC",
