@@ -20,14 +20,72 @@ import {
   EyeOff,
   RefreshCw,
   ArrowLeft,
-  AlertCircle
+  AlertCircle,
+  Sparkles,
+  ChevronRight,
+  CheckCircle2,
+  Code2,
+  Cpu,
+  Layers,
+  Bot,
+  Calendar,
+  Search,
+  Bell,
+  Shield
 } from "lucide-react";
+
+interface DeveloperContributor {
+  name: string;
+  regNo: string;
+  role: string;
+  isLead?: boolean;
+  contributions: string[];
+}
+
+const teamContributors: DeveloperContributor[] = [
+  {
+    name: "Kumar Harshvardhan",
+    regNo: "25MIM10100",
+    role: "Team Lead",
+    isLead: true,
+    contributions: [
+      "Designed overall System Architecture & UI/UX Portal",
+      "Integrated VTOP AI Academic Assistant & Chat Interface",
+      "Integrated Proctor Meeting Scheduler & Live Alerts",
+    ],
+  },
+  {
+    name: "Vibhor Srivastava",
+    regNo: "25MIM10093",
+    role: "Developer",
+    contributions: ["Notification Alert System Developer"],
+  },
+  {
+    name: "Sumedha Pradhan",
+    regNo: "25MIM10095",
+    role: "Developer",
+    contributions: ["Proctor Schedule Developer"],
+  },
+  {
+    name: "Rehman Saini",
+    regNo: "25MIM10003",
+    role: "AI Developer",
+    contributions: ["AI-Assistant Developer"],
+  },
+  {
+    name: "Harshit Singhal",
+    regNo: "25MIM10195",
+    role: "Developer",
+    contributions: ["VTOP-Search-Feature Developer"],
+  },
+];
 
 export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [activeRole, setActiveRole] = useState<string | null>(null);
   const [spotlightOpen, setSpotlightOpen] = useState<boolean>(false);
+  const [contributorsModalOpen, setContributorsModalOpen] = useState<boolean>(false);
 
   // Credential Modal State
   const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
@@ -571,12 +629,184 @@ export default function LoginPage() {
         </div>
       )}
 
-      {/* Fixed Bottom Footer */}
-      <footer className="fixed bottom-0 left-0 right-0 z-40 bg-[#1B365D]/95 backdrop-blur-md text-white py-2.5 text-center text-xs border-t border-white/10 shadow-lg">
-        <span className="font-medium tracking-wide">
-          Copyright © 2026 Software Development Cell, VIT, Bhopal-466 114.
+      {/* Interactive Bottom Footer */}
+      <footer className="fixed bottom-0 left-0 right-0 z-40 bg-[#1B365D]/95 backdrop-blur-md text-white py-2.5 px-4 text-center text-xs border-t border-white/10 shadow-lg flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+        <span className="font-medium tracking-wide text-slate-200">
+          © 2026 Enhanced VTOP Portal. All Rights Reserved.
         </span>
+        <span className="text-white/40 hidden sm:inline">•</span>
+        <button
+          type="button"
+          onClick={() => setContributorsModalOpen(true)}
+          className="inline-flex items-center gap-1 text-cyan-300 hover:text-cyan-100 font-semibold underline underline-offset-4 decoration-cyan-400/50 hover:decoration-cyan-200 transition-colors cursor-pointer group"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
+          <span>Meet the Developers & Contributors</span>
+          <ChevronRight className="w-3.5 h-3.5 text-cyan-400 group-hover:translate-x-0.5 transition-transform" />
+        </button>
       </footer>
+
+      {/* Cyber/Glow Themed Developers & Contributors Modal */}
+      {contributorsModalOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setContributorsModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-3xl max-h-[92vh] bg-slate-950/95 border border-cyan-500/40 rounded-2xl shadow-[0_0_50px_rgba(6,182,212,0.2)] flex flex-col overflow-hidden text-slate-100 animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="relative px-6 py-5 bg-gradient-to-r from-slate-950 via-[#0B1528] to-slate-950 border-b border-cyan-500/30 flex items-start justify-between">
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] font-mono font-medium tracking-wide">
+                  <ShieldCheck className="w-3 h-3 text-cyan-400" />
+                  PROJECT EXHIBITION 1 • GROUP 112
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-cyan-400 uppercase">
+                  CONTRIBUTION TABLE
+                </h2>
+                <p className="text-xs text-slate-400">
+                  Architectural, UI/UX & Technical Module Contributors
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setContributorsModalOpen(false)}
+                className="text-slate-400 hover:text-white p-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-700/60 transition cursor-pointer"
+                title="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Scrollable Contributors Body */}
+            <div className="p-5 sm:p-6 overflow-y-auto space-y-4 max-h-[calc(92vh-180px)]">
+              {/* Team Lead Highlight Card */}
+              {teamContributors
+                .filter((dev) => dev.isLead)
+                .map((lead) => (
+                  <div
+                    key={lead.regNo}
+                    className="relative overflow-hidden rounded-xl bg-gradient-to-br from-cyan-950/40 via-slate-900/80 to-blue-950/40 border border-cyan-500/50 p-4 sm:p-5 shadow-[0_0_25px_rgba(6,182,212,0.15)]"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-cyan-500/20">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center font-bold text-white shadow-md text-sm">
+                          KH
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-base font-bold text-white tracking-wide">
+                              {lead.name}
+                            </h3>
+                            <span className="px-2 py-0.5 text-[10px] font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 rounded font-semibold">
+                              {lead.regNo}
+                            </span>
+                          </div>
+                          <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wider flex items-center gap-1 mt-0.5">
+                            <Sparkles className="w-3 h-3" />
+                            {lead.role} & System Architect
+                          </span>
+                        </div>
+                      </div>
+                      <span className="px-2.5 py-1 text-[11px] font-semibold bg-cyan-400 text-slate-950 rounded-full shadow">
+                        Lead Architect
+                      </span>
+                    </div>
+
+                    <div className="mt-3.5 space-y-2">
+                      <span className="text-[11px] font-mono uppercase text-slate-400 tracking-wider">
+                        Core Technical Contributions:
+                      </span>
+                      <ul className="space-y-1.5 text-xs text-slate-200">
+                        {lead.contributions.map((item, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                            <span className="leading-snug">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+
+              {/* Other Contributors Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {teamContributors
+                  .filter((dev) => !dev.isLead)
+                  .map((dev) => (
+                    <div
+                      key={dev.regNo}
+                      className="rounded-xl bg-slate-900/70 border border-slate-800 hover:border-cyan-500/30 p-4 transition-colors flex flex-col justify-between"
+                    >
+                      <div>
+                        <div className="flex items-start justify-between gap-2 pb-2 border-b border-slate-800/80">
+                          <div>
+                            <h4 className="text-sm font-bold text-white">
+                              {dev.name}
+                            </h4>
+                            <span className="text-[11px] text-cyan-400 font-medium">
+                              {dev.role}
+                            </span>
+                          </div>
+                          <span className="px-2 py-0.5 text-[10px] font-mono bg-slate-800 text-slate-300 border border-slate-700 rounded">
+                            {dev.regNo}
+                          </span>
+                        </div>
+
+                        <div className="mt-3">
+                          <ul className="space-y-1.5 text-xs text-slate-300">
+                            {dev.contributions.map((item, idx) => (
+                              <li key={idx} className="flex items-start gap-2">
+                                <Code2 className="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5" />
+                                <span className="leading-snug">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+
+              {/* Team Summary Card with Green-Hued Glowing Border */}
+              <div className="rounded-xl bg-emerald-950/30 border border-emerald-500/40 p-4 shadow-[0_0_25px_rgba(16,185,129,0.12)]">
+                <div className="flex items-start gap-3">
+                  <div className="p-1.5 rounded-lg bg-emerald-500/20 border border-emerald-500/40 shrink-0 mt-0.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  </div>
+                  <div className="space-y-1 text-xs">
+                    <h5 className="font-bold text-emerald-300 uppercase tracking-wide text-[11px]">
+                      Team Summary & Collaborative Execution
+                    </h5>
+                    <p className="text-emerald-200/90 leading-relaxed">
+                      &ldquo;The project was executed with full collaborative effort, seamless module integration, and 100% individual dedication from all team members, achieving all targeted objectives successfully.&rdquo;
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-3.5 bg-slate-950/90 border-t border-slate-800/80 flex items-center justify-between">
+              <span className="text-[11px] text-slate-400">
+                Fall Semester 2026–2027 • Academic Portal Prototype
+              </span>
+              <button
+                type="button"
+                onClick={() => setContributorsModalOpen(false)}
+                className="px-4 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs rounded-lg transition-colors cursor-pointer shadow"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

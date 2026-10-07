@@ -2,6 +2,19 @@
   "name": "enhanced-vtop",
   "version": "0.1.0",
   "private": true,
+  "author": "Kumar Harshvardhan <kumarharshvardhan922@gmail.com>",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KUMARHARSHVARDHAN-CYBER/PROJECT-EXHIBITION-1-FALL-SEM-2026-2027--Group-112.git"
+  },
+  "contributors": [
+    "Kumar Harshvardhan (25MIM10100) - Team Lead & Architect",
+    "Vibhor Srivastava (25MIM10093) - Developer",
+    "Sumedha Pradhan (25MIM10095) - Developer",
+    "Rehman Saini (25MIM10003) - AI Developer",
+    "Harshit Singhal (25MIM10195) - Developer"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -468,8 +468,13 @@ export default function DashboardLayout({
         )}
 
         {/* ================= MAIN CONTENT AREA ================= */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#f4f6f9]">
-          {children}
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#f4f6f9] flex flex-col justify-between">
+          <div className="flex-1">
+            {children}
+          </div>
+          <footer className="mt-8 pt-4 pb-2 border-t border-gray-200/80 text-center text-xs text-gray-500">
+            <p>Copyright © 2026 Enhanced VTOP • Project Exhibition 1 (Group 112). All rights reserved.</p>
+          </footer>
         </main>
       </div>
     </div>

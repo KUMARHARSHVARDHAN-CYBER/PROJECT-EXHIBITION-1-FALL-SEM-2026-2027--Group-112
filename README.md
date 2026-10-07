@@ -94,3 +94,34 @@ npm start
 
 Navigate to `http://localhost:3000`. Login processing is benchmarked at under 10ms execution time.
 
+---
+
+---
+
+## 👥 Developers & Contributors (Group 112)
+
+| Developer | Registration No. | Role | Key Technical Contributions |
+| :--- | :--- | :--- | :--- |
+| **Kumar Harshvardhan** | `25MIM10100` | **Team Lead** | • Designed overall System Architecture & UI/UX Portal<br>• Integrated VTOP AI Academic Assistant & Chat Interface<br>• Integrated Proctor Meeting Scheduler & Live Alerts |
+| **Vibhor Srivastava** | `25MIM10093` | **Developer** | • Notification Alert System Developer |
+| **Sumedha Pradhan** | `25MIM10095` | **Developer** | • Proctor Schedule Developer |
+| **Rehman Saini** | `25MIM10003` | **AI Developer** | • AI-Assistant Developer |
+| **Harshit Singhal** | `25MIM10195` | **Developer** | • VTOP-Search-Feature Developer |
+
+> **Team Summary & Statement:**  
+> *The project was executed with full collaborative effort, seamless module integration, and 100% individual dedication from all team members, achieving all targeted objectives successfully.*
+
+---
+
+## 📜 Copyright & License
+
+**Copyright © 2026 Kumar Harshvardhan & Project Contributors (Group 112). All Rights Reserved.**
+
+This repository and its codebase are developed as part of **Project Exhibition 1 (Fall Semester 2026–2027)** for Group 112.
+
+* All source code, designs, mock datasets, and architectural implementations are proprietary intellectual property of the authors.
+* Unauthorized commercial reproduction, redistribution, or duplication of this repository or its submodules without explicit written permission is strictly prohibited.
+* For more details regarding permissible non-commercial evaluation and terms, see the [LICENSE](file:///c:/Users/HARSHVARDHAN/Desktop/enhanced-vtop/LICENSE) file.
+
+
+
